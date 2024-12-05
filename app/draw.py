@@ -55,6 +55,9 @@ class DrawingPredictionApp:
 
         self.save_model_button = tk.Button(self.predict_frame, text="Save", command=self.save_model)
         self.save_model_button.pack()
+    
+    def _set_feedback(self, text):
+        self.feedback_label.config(text=text)
 
     def paint(self, event):
         x, y = event.x, event.y
@@ -86,7 +89,7 @@ class DrawingPredictionApp:
     
     def show_prediction(self):
         prediction, _ = self.predict()
-        self.feedback_label.config(text=f"Prediction: {prediction}")
+        self._set_feedback(f"Prediction: {prediction}")
     
     def refine_prediction(self, ans):
         if ans not in self.options:
@@ -95,16 +98,16 @@ class DrawingPredictionApp:
         token = torch.tensor(self.tokenize_canvas(), dtype=torch.float32).unsqueeze(0)
         label = torch.tensor([self.options.index(ans)], dtype=torch.long)
         self.nn.train_model(token, label, epochs=10, learning_rate=0.01)
-        self.feedback_label.config(text="Model refined with your feedback.")
+        self._set_feedback("Model refined with your feedback.")
     
     def save_model(self):
         torch.save(self.nn.state_dict(), self.model_filepath)
-        self.feedback_label.config(text=f"Model saved to {self.model_filepath}")
+        self._set_feedback(f"Model saved to {self.model_filepath}")
 
     def load_model(self):
         self.nn.load_state_dict(torch.load(self.model_filepath))
         self.nn.eval()
-        self.feedback_label.config(text=f"Model loaded: {self.model_filepath}")
+        self._set_feedback(f"Model loaded: {self.model_filepath}")
 
     def run(self):
         self.window.mainloop()

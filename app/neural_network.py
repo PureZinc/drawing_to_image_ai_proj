@@ -23,13 +23,12 @@ class NeuralNetwork(nn.Module):
     
     def train_model(self, x_train, y_train, epochs, learning_rate):
         optimizer = optim.Adam(self.parameters(), lr=learning_rate)
-        criterion = nn.CrossEntropyLoss()  # Choose appropriate loss function
+        criterion = nn.CrossEntropyLoss()
         
         for epoch in range(epochs):
-            self.train()  # Set model to training mode
+            self.train()
             optimizer.zero_grad()
             
-            # Forward pass
             outputs = self(x_train)
             loss = criterion(outputs, y_train)
             

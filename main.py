@@ -1,6 +1,9 @@
 from app import DrawingPredictionApp
 
 
+name = "Digit Recognizer"
+outputs = [str(x) for x in range(10)] # Set the possible outputs here
+
 if __name__ == "__main__":
-    app = DrawingPredictionApp("Digit Recognizer", [str(x) for x in range(10)])
-    app.run()
+    digit_recognizer = DrawingPredictionApp(name, outputs)
+    digit_recognizer.run()
